@@ -1,7 +1,7 @@
 package VideoStore
 
 class ChildrenPrice : Price() {
-    override val code: Int = Movie.CHILDRENS
+    override val code: Int = Movie.CHILDREN
 
     override fun getCharge(daysRented: Int): Double {
         var amount: Double = 1.5

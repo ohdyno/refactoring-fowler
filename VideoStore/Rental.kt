@@ -1,8 +1,8 @@
 package VideoStore
 
-public data class Rental(val movie: Movie, val daysRented: Int) {
-    public val charge: Double
+data class Rental(val movie: Movie, val daysRented: Int) {
+    val charge: Double
         get() = movie.getCharge(daysRented)
-    public val frequentRenterPoints: Int
+    val frequentRenterPoints: Int
         get() = movie.getFrequentRenterPoints(daysRented)
 }

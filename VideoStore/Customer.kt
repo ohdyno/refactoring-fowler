@@ -1,7 +1,7 @@
 package VideoStore
 import java.util.*
 
-public data class Customer(val name: String) {
+data class Customer(val name: String) {
     private val rentals: MutableList<Rental> = ArrayList()
 
     private val totalCharge: Double
