@@ -51,11 +51,7 @@ public data class Customer(val name: String) {
         var result = "Rental Record for $name \n"
 
         while (rentals.hasNext()) {
-            var thisAmount: Double = 0.0
             val each: Rental = rentals.next()
-
-            // determine amounts for each line
-            thisAmount += each.getCharge()
 
             // add frequent renter points
             frequentRenterPoints++
@@ -65,8 +61,8 @@ public data class Customer(val name: String) {
             }
 
             // show figures for this rental
-            result += "\t${each.movie.title}\t${thisAmount}\n"
-            totalAmount += thisAmount
+            result += "\t${each.movie.title}\t${each.getCharge()}\n"
+            totalAmount += each.getCharge()
         }
 
         //add footer lines
