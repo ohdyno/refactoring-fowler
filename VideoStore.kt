@@ -56,6 +56,17 @@ public data class Customer(val name: String) {
                 return totalAmount
             }
 
+    private val totalFrequentRenterPoints: Int
+    get() {
+        var totalFrequentRenterPoints: Int = 0
+        val iterator = rentals.iterator()
+        while (iterator.hasNext()) {
+            val each: Rental = iterator.next()
+            totalFrequentRenterPoints += each.getFrequentRenterPoints()
+        }
+        return totalFrequentRenterPoints
+    }
+
     fun addRental(rental: Rental) {
         rentals.add(rental)
     }
@@ -63,19 +74,16 @@ public data class Customer(val name: String) {
     fun statement(): String {
         val rentals = rentals.iterator()
         var result = "Rental Record for $name \n"
-        var frequentRenterPoints: Int = 0
 
         while (rentals.hasNext()) {
             val each: Rental = rentals.next()
-            frequentRenterPoints += each.getFrequentRenterPoints()
-
             // show figures for this rental
             result += "\t${each.movie.title}\t${each.getCharge()}\n"
         }
 
         //add footer lines
         result += "Amount owed is ${totalCharge}\n"
-        result += "You earned ${frequentRenterPoints} frequent renter points"
+        result += "You earned ${totalFrequentRenterPoints} frequent renter points"
         return result
     }
 }
