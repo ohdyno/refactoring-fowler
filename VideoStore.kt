@@ -15,7 +15,7 @@ public class Movie(val title: String, priceCode: Int) {
     private lateinit var price: Price
 
     public var priceCode: Int
-        get() = price.priceCode
+        get() = price.code
         set(value) {
             price = when (value) {
                 REGULAR -> RegularPrice()
@@ -38,41 +38,38 @@ public class Movie(val title: String, priceCode: Int) {
 }
 
 abstract class Price {
-    abstract val priceCode: Int
-
-    fun getCharge(daysRented: Int): Double =
-        when (priceCode) {
-            Movie.REGULAR -> {
-                var amount: Double = 2.0
-                if (daysRented > 2) {
-                    amount += (daysRented - 2) * 1.5
-                }
-                amount
-            }
-            Movie.NEW_RELEASE -> {
-                daysRented * 3.0
-            }
-            Movie.CHILDRENS -> {
-                var amount: Double = 1.5
-                if (daysRented > 3) {
-                    amount += (daysRented - 3) * 1.5
-                }
-                amount
-            }
-            else -> 0.0
-        }
+    abstract val code: Int
+    abstract fun getCharge(daysRented: Int): Double
 }
 
 class ChildrenPrice : Price() {
-    override val priceCode: Int = Movie.CHILDRENS
+    override val code: Int = Movie.CHILDRENS
+
+    override fun getCharge(daysRented: Int): Double {
+        var amount: Double = 1.5
+        if (daysRented > 3) {
+            amount += (daysRented - 3) * 1.5
+        }
+        return amount
+    }
 }
 
 class NewReleasePrice : Price() {
-    override val priceCode: Int = Movie.NEW_RELEASE
+    override val code: Int = Movie.NEW_RELEASE
+
+    override fun getCharge(daysRented: Int): Double = daysRented * 3.0
 }
 
 class RegularPrice : Price() {
-    override val priceCode: Int = Movie.REGULAR
+    override val code: Int = Movie.REGULAR
+
+    override fun getCharge(daysRented: Int): Double {
+        var amount: Double = 2.0
+        if (daysRented > 2) {
+            amount += (daysRented - 2) * 1.5
+        }
+        return amount
+    }
 }
 
 public data class Rental(val movie: Movie, val daysRented: Int) {
