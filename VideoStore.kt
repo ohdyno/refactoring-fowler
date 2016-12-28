@@ -13,7 +13,29 @@ public data class Movie(val title: String, var priceCode: Int) {
     }
 }
 
-public data class Rental(val movie: Movie, val daysRented: Int)
+public data class Rental(val movie: Movie, val daysRented: Int) {
+    public fun getCharge(): Double =
+            when (movie.priceCode) {
+                Movie.REGULAR -> {
+                    var amount: Double = 2.0
+                    if (daysRented > 2) {
+                        amount += (daysRented - 2) * 1.5
+                    }
+                    amount
+                }
+                Movie.NEW_RELEASE -> {
+                    daysRented * 3.0
+                }
+                Movie.CHILDRENS -> {
+                    var amount: Double = 1.5
+                    if (daysRented > 3) {
+                        amount += (daysRented - 3) * 1.5
+                    }
+                    amount
+                }
+                else -> 0.0
+            }
+}
 
 public data class Customer(val name: String) {
     private val rentals: MutableList<Rental> = ArrayList()
@@ -33,7 +55,7 @@ public data class Customer(val name: String) {
             val each: Rental = rentals.next()
 
             // determine amounts for each line
-            thisAmount += amountFor(each)
+            thisAmount += each.getCharge()
 
             // add frequent renter points
             frequentRenterPoints++
@@ -52,26 +74,4 @@ public data class Customer(val name: String) {
         result += "You earned ${frequentRenterPoints} frequent renter points"
         return result
     }
-
-    private fun amountFor(rental: Rental): Double =
-            when (rental.movie.priceCode) {
-                Movie.REGULAR -> {
-                    var amount: Double = 2.0
-                    if (rental.daysRented > 2) {
-                        amount += (rental.daysRented - 2) * 1.5
-                    }
-                    amount
-                }
-                Movie.NEW_RELEASE -> {
-                    rental.daysRented * 3.0
-                }
-                Movie.CHILDRENS -> {
-                    var amount: Double = 1.5
-                    if (rental.daysRented > 3) {
-                        amount += (rental.daysRented - 3) * 1.5
-                    }
-                    amount
-                }
-                else -> 0.0
-            }
 }
