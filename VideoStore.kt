@@ -40,8 +40,10 @@ public data class Movie(val title: String, val priceCode: Int) {
 }
 
 public data class Rental(val movie: Movie, val daysRented: Int) {
-    public fun getCharge(): Double = movie.getCharge(daysRented)
-    public fun getFrequentRenterPoints(): Int = movie.getFrequentRenterPoints(daysRented)
+    public val charge: Double
+        get() = movie.getCharge(daysRented)
+    public val frequentRenterPoints: Int
+        get() = movie.getFrequentRenterPoints(daysRented)
 }
 
 public data class Customer(val name: String) {
@@ -53,7 +55,7 @@ public data class Customer(val name: String) {
             val iterator = rentals.iterator()
             while (iterator.hasNext()) {
                 val each: Rental = iterator.next()
-                totalAmount = each.getCharge()
+                totalAmount = each.charge
             }
 
             return totalAmount
@@ -65,7 +67,7 @@ public data class Customer(val name: String) {
             val iterator = rentals.iterator()
             while (iterator.hasNext()) {
                 val each: Rental = iterator.next()
-                totalFrequentRenterPoints += each.getFrequentRenterPoints()
+                totalFrequentRenterPoints += each.frequentRenterPoints
             }
             return totalFrequentRenterPoints
         }
@@ -81,7 +83,7 @@ public data class Customer(val name: String) {
         while (rentals.hasNext()) {
             val each: Rental = rentals.next()
             // show figures for this rental
-            result += "\t${each.movie.title}\t${each.getCharge()}\n"
+            result += "\t${each.movie.title}\t${each.charge}\n"
         }
 
         //add footer lines
@@ -98,7 +100,7 @@ public data class Customer(val name: String) {
         while (rentals.hasNext()) {
             val each: Rental = rentals.next()
             // show figures for this rental
-            result += "\t${each.movie.title}\t${each.getCharge()}</br>\n"
+            result += "\t${each.movie.title}\t${each.charge}</br>\n"
         }
         result += "</p>"
 
