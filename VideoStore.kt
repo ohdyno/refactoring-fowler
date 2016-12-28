@@ -44,12 +44,23 @@ public data class Rental(val movie: Movie, val daysRented: Int) {
 public data class Customer(val name: String) {
     private val rentals: MutableList<Rental> = ArrayList()
 
+    private val totalCharge: Double
+            get() {
+                var totalAmount: Double = 0.0
+                val iterator = rentals.iterator()
+                while (iterator.hasNext()) {
+                    val each: Rental = iterator.next()
+                    totalAmount = each.getCharge()
+                }
+
+                return totalAmount
+            }
+
     fun addRental(rental: Rental) {
         rentals.add(rental)
     }
 
     fun statement(): String {
-        var totalAmount: Double = 0.0
         val rentals = rentals.iterator()
         var result = "Rental Record for $name \n"
         var frequentRenterPoints: Int = 0
@@ -60,11 +71,10 @@ public data class Customer(val name: String) {
 
             // show figures for this rental
             result += "\t${each.movie.title}\t${each.getCharge()}\n"
-            totalAmount += each.getCharge()
         }
 
         //add footer lines
-        result += "Amount owed is ${totalAmount}\n"
+        result += "Amount owed is ${totalCharge}\n"
         result += "You earned ${frequentRenterPoints} frequent renter points"
         return result
     }
