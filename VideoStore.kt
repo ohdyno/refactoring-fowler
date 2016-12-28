@@ -5,11 +5,28 @@ import java.util.*
  * Responsibility:
  */
 
-public data class Movie(val title: String, val priceCode: Int) {
+public class Movie(val title: String, priceCode: Int) {
     companion object {
         val CHILDRENS = 2
         val REGULAR = 0
         val NEW_RELEASE = 1
+    }
+
+    private lateinit var price: Price
+
+    public var priceCode: Int
+        get() = price.priceCode
+        set(value) {
+            price = when (value) {
+                REGULAR -> RegularPrice()
+                CHILDRENS -> ChildrenPrice()
+                NEW_RELEASE -> NewReleasePrice()
+                else -> throw IllegalArgumentException("Incorrect Price Code")
+            }
+        }
+
+    init {
+        this.priceCode = priceCode
     }
 
     public fun getCharge(daysRented: Int): Double =
@@ -37,6 +54,22 @@ public data class Movie(val title: String, val priceCode: Int) {
     public fun getFrequentRenterPoints(daysRented: Int): Int {
         return if ((priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
     }
+}
+
+abstract class Price {
+    abstract val priceCode: Int
+}
+
+class ChildrenPrice : Price() {
+    override val priceCode: Int = Movie.CHILDRENS
+}
+
+class NewReleasePrice : Price() {
+    override val priceCode: Int = Movie.NEW_RELEASE
+}
+
+class RegularPrice : Price() {
+    override val priceCode: Int = Movie.REGULAR
 }
 
 public data class Rental(val movie: Movie, val daysRented: Int) {
