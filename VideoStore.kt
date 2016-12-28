@@ -5,17 +5,15 @@ import java.util.*
  * Responsibility:
  */
 
-public data class Movie(val title: String, var priceCode: Int) {
+public data class Movie(val title: String, val priceCode: Int) {
     companion object {
         val CHILDRENS = 2
         val REGULAR = 0
         val NEW_RELEASE = 1
     }
-}
 
-public data class Rental(val movie: Movie, val daysRented: Int) {
-    public fun getCharge(): Double =
-            when (movie.priceCode) {
+    public fun getCharge(daysRented: Int): Double =
+            when (priceCode) {
                 Movie.REGULAR -> {
                     var amount: Double = 2.0
                     if (daysRented > 2) {
@@ -36,9 +34,14 @@ public data class Rental(val movie: Movie, val daysRented: Int) {
                 else -> 0.0
             }
 
-    fun getFrequentRenterPoints(): Int {
-        return if ((movie.priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
+    public fun getFrequentRenterPoints(daysRented: Int): Int {
+        return if ((priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
     }
+}
+
+public data class Rental(val movie: Movie, val daysRented: Int) {
+    public fun getCharge(): Double = movie.getCharge(daysRented)
+    public fun getFrequentRenterPoints(): Int = movie.getFrequentRenterPoints(daysRented)
 }
 
 public data class Customer(val name: String) {
