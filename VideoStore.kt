@@ -35,6 +35,10 @@ public data class Rental(val movie: Movie, val daysRented: Int) {
                 }
                 else -> 0.0
             }
+
+    fun getFrequentRenterPoints(): Int {
+        return if ((movie.priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
+    }
 }
 
 public data class Customer(val name: String) {
@@ -46,19 +50,13 @@ public data class Customer(val name: String) {
 
     fun statement(): String {
         var totalAmount: Double = 0.0
-        var frequentRenterPoints: Int = 0
         val rentals = rentals.iterator()
         var result = "Rental Record for $name \n"
+        var frequentRenterPoints: Int = 0
 
         while (rentals.hasNext()) {
             val each: Rental = rentals.next()
-
-            // add frequent renter points
-            frequentRenterPoints++
-            // add bonus for a two day new release rental
-            if ((each.movie.priceCode == Movie.NEW_RELEASE) && each.daysRented > 1) {
-                frequentRenterPoints++
-            }
+            frequentRenterPoints += each.getFrequentRenterPoints()
 
             // show figures for this rental
             result += "\t${each.movie.title}\t${each.getCharge()}\n"
