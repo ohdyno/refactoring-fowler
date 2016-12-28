@@ -33,23 +33,7 @@ public data class Customer(val name: String) {
             val each: Rental = rentals.next()
 
             // determine amounts for each line
-            when (each.movie.priceCode) {
-                Movie.REGULAR -> {
-                    thisAmount += 2
-                    if (each.daysRented > 2) {
-                        thisAmount += (each.daysRented - 2) * 1.5
-                    }
-                }
-                Movie.NEW_RELEASE -> {
-                    thisAmount += each.daysRented * 3
-                }
-                Movie.CHILDRENS -> {
-                    thisAmount += 1.5
-                    if (each.daysRented > 3) {
-                        thisAmount += (each.daysRented - 3) * 1.5
-                    }
-                }
-            }
+            thisAmount += amountFor(each)
 
             // add frequent renter points
             frequentRenterPoints++
@@ -68,4 +52,26 @@ public data class Customer(val name: String) {
         result += "You earned ${frequentRenterPoints} frequent renter points"
         return result
     }
+
+    private fun amountFor(rental: Rental): Double =
+            when (rental.movie.priceCode) {
+                Movie.REGULAR -> {
+                    var amount: Double = 2.0
+                    if (rental.daysRented > 2) {
+                        amount += (rental.daysRented - 2) * 1.5
+                    }
+                    amount
+                }
+                Movie.NEW_RELEASE -> {
+                    rental.daysRented * 3.0
+                }
+                Movie.CHILDRENS -> {
+                    var amount: Double = 1.5
+                    if (rental.daysRented > 3) {
+                        amount += (rental.daysRented - 3) * 1.5
+                    }
+                    amount
+                }
+                else -> 0.0
+            }
 }
