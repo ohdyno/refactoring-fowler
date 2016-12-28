@@ -31,15 +31,13 @@ public class Movie(val title: String, priceCode: Int) {
 
     public fun getCharge(daysRented: Int): Double = price.getCharge(daysRented)
 
-
-    public fun getFrequentRenterPoints(daysRented: Int): Int {
-        return if ((priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
-    }
+    public fun getFrequentRenterPoints(daysRented: Int): Int = price.getFrequentRenterPoints(daysRented)
 }
 
 abstract class Price {
     abstract val code: Int
     abstract fun getCharge(daysRented: Int): Double
+    open fun getFrequentRenterPoints(daysRented: Int): Int = 1
 }
 
 class ChildrenPrice : Price() {
@@ -58,6 +56,8 @@ class NewReleasePrice : Price() {
     override val code: Int = Movie.NEW_RELEASE
 
     override fun getCharge(daysRented: Int): Double = daysRented * 3.0
+
+    override fun getFrequentRenterPoints(daysRented: Int): Int = if (daysRented > 1) 2 else 1
 }
 
 class RegularPrice : Price() {
