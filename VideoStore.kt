@@ -45,27 +45,27 @@ public data class Customer(val name: String) {
     private val rentals: MutableList<Rental> = ArrayList()
 
     private val totalCharge: Double
-            get() {
-                var totalAmount: Double = 0.0
-                val iterator = rentals.iterator()
-                while (iterator.hasNext()) {
-                    val each: Rental = iterator.next()
-                    totalAmount = each.getCharge()
-                }
-
-                return totalAmount
+        get() {
+            var totalAmount: Double = 0.0
+            val iterator = rentals.iterator()
+            while (iterator.hasNext()) {
+                val each: Rental = iterator.next()
+                totalAmount = each.getCharge()
             }
 
-    private val totalFrequentRenterPoints: Int
-    get() {
-        var totalFrequentRenterPoints: Int = 0
-        val iterator = rentals.iterator()
-        while (iterator.hasNext()) {
-            val each: Rental = iterator.next()
-            totalFrequentRenterPoints += each.getFrequentRenterPoints()
+            return totalAmount
         }
-        return totalFrequentRenterPoints
-    }
+
+    private val totalFrequentRenterPoints: Int
+        get() {
+            var totalFrequentRenterPoints: Int = 0
+            val iterator = rentals.iterator()
+            while (iterator.hasNext()) {
+                val each: Rental = iterator.next()
+                totalFrequentRenterPoints += each.getFrequentRenterPoints()
+            }
+            return totalFrequentRenterPoints
+        }
 
     fun addRental(rental: Rental) {
         rentals.add(rental)
