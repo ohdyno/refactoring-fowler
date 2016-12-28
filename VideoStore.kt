@@ -86,4 +86,22 @@ public data class Customer(val name: String) {
         result += "You earned ${totalFrequentRenterPoints} frequent renter points"
         return result
     }
+
+    fun htmlStatement(): String {
+        val rentals = rentals.iterator()
+        var result = "<h1>Rental Record for <em>$name</em></h1>\n"
+
+        result += "<p>"
+        while (rentals.hasNext()) {
+            val each: Rental = rentals.next()
+            // show figures for this rental
+            result += "\t${each.movie.title}\t${each.getCharge()}</br>\n"
+        }
+        result += "</p>"
+
+        //add footer lines
+        result += "<p>Amount owed is <em>${totalCharge}</em></p>\n"
+        result += "<p>You earned <em>${totalFrequentRenterPoints}</em> frequent renter points</p>"
+        return result
+    }
 }
