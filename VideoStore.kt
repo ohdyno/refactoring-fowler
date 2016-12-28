@@ -29,27 +29,8 @@ public class Movie(val title: String, priceCode: Int) {
         this.priceCode = priceCode
     }
 
-    public fun getCharge(daysRented: Int): Double =
-            when (priceCode) {
-                Movie.REGULAR -> {
-                    var amount: Double = 2.0
-                    if (daysRented > 2) {
-                        amount += (daysRented - 2) * 1.5
-                    }
-                    amount
-                }
-                Movie.NEW_RELEASE -> {
-                    daysRented * 3.0
-                }
-                Movie.CHILDRENS -> {
-                    var amount: Double = 1.5
-                    if (daysRented > 3) {
-                        amount += (daysRented - 3) * 1.5
-                    }
-                    amount
-                }
-                else -> 0.0
-            }
+    public fun getCharge(daysRented: Int): Double = price.getCharge(daysRented)
+
 
     public fun getFrequentRenterPoints(daysRented: Int): Int {
         return if ((priceCode == Movie.NEW_RELEASE) && daysRented > 1) 2 else 1
@@ -58,6 +39,28 @@ public class Movie(val title: String, priceCode: Int) {
 
 abstract class Price {
     abstract val priceCode: Int
+
+    fun getCharge(daysRented: Int): Double =
+        when (priceCode) {
+            Movie.REGULAR -> {
+                var amount: Double = 2.0
+                if (daysRented > 2) {
+                    amount += (daysRented - 2) * 1.5
+                }
+                amount
+            }
+            Movie.NEW_RELEASE -> {
+                daysRented * 3.0
+            }
+            Movie.CHILDRENS -> {
+                var amount: Double = 1.5
+                if (daysRented > 3) {
+                    amount += (daysRented - 3) * 1.5
+                }
+                amount
+            }
+            else -> 0.0
+        }
 }
 
 class ChildrenPrice : Price() {
